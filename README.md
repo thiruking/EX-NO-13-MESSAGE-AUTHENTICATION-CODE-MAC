@@ -26,53 +26,25 @@ To implement MESSAGE AUTHENTICATION CODE(MAC)
 
 ## Program:
 ```py
-#include <stdio.h>
-#include <string.h>
+#include<stdio.h>
+#include<string.h>
 
-#define MAC_SIZE 32
+int main()
+{
+    char k[50], m[50];
+    unsigned char mac[10];
 
-void computeMAC(const char *key, const char *message, unsigned char *mac) {
+    printf("Enter key and message: ");
+    scanf("%s %s",k,m);
 
-    int key_len = strlen(key);
-    int msg_len = strlen(message);
+    int kl=strlen(k), ml=strlen(m);
 
-    for (int i = 0; i < MAC_SIZE; i++) {
-        mac[i] = key[i % key_len] ^ message[i % msg_len];
-    }
-}
+    for(int i=0;i<10;i++)
+        mac[i]=k[i%kl]^m[i%ml];
 
-int main() {
-
-    char key[100], message[100];
-    unsigned char mac[MAC_SIZE];
-    unsigned char receivedMAC[MAC_SIZE];
-
-    printf("Enter the secret key: ");
-    scanf("%s", key);
-
-    printf("Enter the message: ");
-    scanf("%s", message);
-
-    computeMAC(key, message, mac);
-
-    printf("Computed MAC (in hex): ");
-
-    for (int i = 0; i < MAC_SIZE; i++) {
-        printf("%02x", mac[i]);
-    }
-
-    printf("\n");
-
-    printf("Enter the received MAC (as hex): ");
-
-    for (int i = 0; i < MAC_SIZE; i++) {
-        scanf("%2hhx", &receivedMAC[i]);
-    }
-
-    if (memcmp(mac, receivedMAC, MAC_SIZE) == 0)
-        printf("MAC verification successful. Message is authentic.\n");
-    else
-        printf("MAC verification failed. Message is not authentic.\n");
+    printf("MAC: ");
+    for(int i=0;i<10;i++)
+        printf("%02x",mac[i]);
 
     return 0;
 }
